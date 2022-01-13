@@ -1,4 +1,4 @@
-"console strict"
+"use strict"
 function solveEquation(a, b, c) {
   // ax^2+bx+c = 0
   let arr = [];
@@ -21,9 +21,9 @@ function solveEquation(a, b, c) {
 
 function calculateTotalMortgage(percent, contribution, amount, date) {
   let nowDate = new Date();
-  let percentN = Number(percent);
-  let contributionN = Number(contribution);
-  let amountN = Number(amount);
+  let percentN = +percent;
+  let contributionN = +contribution;
+  let amountN = +amount;
   if (Number.isNaN(percentN)) {
     let error = `Параметр "Процентная ставка" содержит неправильное значение "${percent}"`;
     return error;
@@ -36,17 +36,17 @@ function calculateTotalMortgage(percent, contribution, amount, date) {
     let error = `Параметр "Общая стоимость" содержит неправильное значение "${amount}"`;
     return error;
   };
-  let fractionalPercent = Number(percentN) / 100;
+  let fractionalPercent = percentN / 100;
   let creditBody = amountN - contributionN; // тело кредита
   let numberOfMonthes = monthDiff(nowDate, date); // количество месяцев
   let oneTwelfthOfPercent = fractionalPercent / 12;  // 1/12 процентной ставки
   let monthlyLoanPayment = creditBody * (oneTwelfthOfPercent + (oneTwelfthOfPercent / (((1 + oneTwelfthOfPercent) ** numberOfMonthes) - 1)));  // ежемесячная плата
-  let totalAmountFull = contributionN + monthlyLoanPayment * numberOfMonthes;
+  let totalAmountFull = monthlyLoanPayment * numberOfMonthes;
   let totalAmount;
   if (contributionN === amountN) {
     totalAmount = 0
   } else {
-    totalAmount = Number(totalAmountFull.toFixed(2));
+    totalAmount = +(totalAmountFull.toFixed(2));
   }
   console.log(totalAmount);
   return totalAmount;
