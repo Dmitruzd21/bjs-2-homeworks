@@ -16,12 +16,15 @@ class PrintEditionItem {
     set state(newState) {
       if (newState < 0) {
         this._state = 0;
-      } else if (newState > 100) {
-        this._state = 100;
-      } else {
-        this._state = newState;
+        return;
       }
-    }
+      if (newState > 100) {
+        this._state = 100;
+        return;
+      } 
+       this._state = newState;
+      }
+  
   
     get state() {
       return this._state;
@@ -90,7 +93,7 @@ class Library {
     }
   
     giveBookByName(bookName) {
-      let givenBook = this.books.find((element) => element.name === bookName);;
+      let givenBook = this.findBookBy("name", bookName);
       if (givenBook === undefined) {
         return null;
       } else {
@@ -106,88 +109,51 @@ class Library {
   class Student {
     constructor(name) {
       this.name = name;
-      this.subjects = [];
+      this.subjects = {};
     }
   
     addMark(mark, subject) {
-      let subject1 = subject;
       if (mark < 1 || mark > 5) {
         let error = "Ошибка, оценка должна быть числом от 1 до 5"
         return error;
       } else {
         // иначе выполняется метод
-        let subject = this.subjects.find((element) => element.subjectName === subject1);
-        if (subject === undefined) {
-          this.subjects.push(new Subject(subject1, mark));
-        } else {
-          subject.marks.push(mark);
+        // предмета нет - создаем его
+        if (!(subject in this.subjects)) {
+          this.subjects[subject] = []
         }
+        this.subjects[subject].push(mark);
       }
     }
-
-   getAverageBySubject(subject) {
-    let subjectElement = this.subjects.find((element) => element.subjectName === subject);
-    if (subjectElement === undefined) {
-      let error = "Несуществующий предмет";
-      return error;
-    } else {
-      // иначе выполняется метод
-      let arrayOfMarks = subjectElement.marks;
-      let sum = 0;
-      for (let i = 0; i < arrayOfMarks.length; i++) {
-        sum += arrayOfMarks[i];
+  
+    getAverageBySubject(subject) {
+      if (subject in this.subjects) {
+        let sum = this.subjects[subject].reduce((sum, item) => sum + item);
+        return sum / this.subjects[subject].length;
+      } else {
+        return "Несуществующий предмет"
       }
-      let averageMark = sum / arrayOfMarks.length;
-      return averageMark;
     }
-  }
-    
+  
     getAverage() {
-    // складываем массивы оценок по предметам в один общий массив:
-    let generalArrayOfMarks1 = new Array;
-    let generalArrayOfMarks2 = new Array;
-    // проходимся по всем элементам (предметам)
-    for (let i = 0; i < this.subjects.length; i++) {
-      // у каждого элемента(предмета) получаем массив
-      let element = this.subjects[i];
-      let arrayOfElement = element.marks;
-      // при помощи метода concat объединяем массивы
-      generalArrayOfMarks1 = generalArrayOfMarks2.concat(arrayOfElement);
-      generalArrayOfMarks2 = generalArrayOfMarks1;
-    }
-    // ищем сумму оценок  общего массива
-    let sum = 0;
-    for (let i = 0; i < generalArrayOfMarks2.length; i++) {
-      sum += generalArrayOfMarks1[i];
-    }
-    // ищем среднее значение и сразу возвращаем его
-    return sum / generalArrayOfMarks1.length;
-  }
-
-   exclude(reason) {
-    delete this.subjects;
-    this.excluded = reason;
-  }
-}
-  
-  class Subject {
-    constructor(subjectName, mark) {
-      this.subjectName = subjectName;
-      this.marks = [mark];
-    }
-    
-    set marks(marks) {
-      this._marks = marks;
+      let sumLength = 0;
+      let sumMark = 0;
+      for (let subject in this.subjects) {
+        sumMark += this.subjects[subject].reduce((sum, item) => sum + item);
+        sumLength += this.subjects[subject].length;
+      }
+      return sumMark / sumLength;
     }
   
-    get marks() {
-      return this._marks;
+    exclude(reason) {
+      delete this.subjects;
+      this.excluded = reason;
     }
   }
   
-  let student1 = new Student("Oleg", "male", 37);
-  let student2 = new Student("Ann", "female", 29);
-  let student3 = new Student("Victor", "male", 21);
+  let student1 = new Student("Oleg");
+  let student2 = new Student("Ann");
+  let student3 = new Student("Victor");
 
 
   
