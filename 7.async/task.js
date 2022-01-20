@@ -35,7 +35,7 @@ class AlarmClock {
     start() {
       // а работает ли уже какой-то интервал?
       let checkClock = (element) => {
-        if (element.time === this.getCurrentFormattedTime()) {
+        if (element.timeHHMM === this.getCurrentFormattedTime()) {
           element.callback();
         }
       };

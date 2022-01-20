@@ -9,21 +9,21 @@ let phoneAlarm = new AlarmClock();
 phoneAlarm.addClock("19:01", () => console.log("Пора вставать"), 1);
 
 
-// 2й будильник звенит один раз
+// 2й будильник звонит один раз
 phoneAlarm.addClock("19:02", () => {
     console.log("Давай, вставай уже");
-    phoneAlarm.printAlarms;
+    phoneAlarm.printAlarms();
     phoneAlarm.removeClock(2);
-    phoneAlarm.printAlarms;
+    phoneAlarm.printAlarms();
 }, 2);
 
 // 3й будильник совсем останавливает будильник и чистит все звонки
 phoneAlarm.addClock("19:03", () => {
     console.log("Ты все проспал! Больше нет смысла тебя будить!");
     phoneAlarm.stop();
-    phoneAlarm.printAlarms;
-    phoneAlarm.clearAlarms;
-    phoneAlarm.printAlarms;
+    phoneAlarm.printAlarms();
+    phoneAlarm.clearAlarms();
+    phoneAlarm.printAlarms();
 }, 3);
 
 phoneAlarm.printAlarms();  // распечатает 3 будильника
@@ -35,7 +35,5 @@ phoneAlarm.removeClock(56);  // вернет false
 phoneAlarm.getCurrentFormattedTime();
 phoneAlarm.start();
 console.log("Идентификатор интервала: " + phoneAlarm.timerId); // теперь будет определенное числовое значение
-phoneAlarm.stop();
-console.log("Идентификатор интервала: " + phoneAlarm.timerId); // после остановки снова равен null
-phoneAlarm.clearAlarms();
-phoneAlarm.printAlarms();   // распечатает 0 будильников
+
+
