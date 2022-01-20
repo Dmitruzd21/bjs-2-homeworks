@@ -14,41 +14,21 @@ class AlarmClock {
         if (isAlarmWithTheSameId === true) {
         console.error("Будильник с таким id уже существует");
       } else {
-        this.alarmCollection.push(new Alarm(id, timeHHMM, func));
+        this.alarmCollection.push({id:id, timeHHMM:timeHHMM, callback:func});
       }
     }
   
     // удаляет определённый звонок
     removeClock(id) {
-      let oldLenthOfAlarmCollection = this.alarmCollection.length;
+      let oldLengthOfAlarmCollection = this.alarmCollection.length;
       this.alarmCollection = this.alarmCollection.filter((element) => element.id !== id);
-      let newLengthOgAlarmCollection = this.alarmCollection.length;
-      if (oldLenthOfAlarmCollection = newLengthOgAlarmCollection) {
-        return false;
-      } else {
-        return true;
-      }
+      let newLengthOfAlarmCollection = this.alarmCollection.length;
+      return oldLengthOfAlarmCollection !== newLengthOfAlarmCollection;
     }
   
     // возвращает текущее время в строковом формате HH:MM.
     getCurrentFormattedTime() {
-        let currentTime = new Date;
-        let hours = currentTime.getHours();
-        let minutes = currentTime.getMinutes();
-        let hourshh;
-        if (hours < 10) {
-          hourshh = `0${hours}`;
-        } else {
-          hourshh = `${hours}`;
-        }
-        let minutesmm;
-        if (minutes < 10) {
-          minutesmm = `0${minutes}`;
-        } else {
-          minutesmm = `${minutes}`;
-        }
-        console.log (`${hourshh}:${minutesmm}`)
-        return `${hourshh}:${minutesmm}`;
+        return new Date().toTimeString().slice(0, 5);
       }
   
     // запускает все звонки
@@ -86,30 +66,4 @@ class AlarmClock {
     }
   }
   
-  class Alarm {
-    constructor(id, time, callback) {
-      this.id = id;
-      this.time = time;
-      this.callback = callback;
-    }
-  }
 
-
-let phoneAlarm = new AlarmClock();
-phoneAlarm.clearAlarms();
-//phoneAlarm.addClock ("17:14", () => console.log("Пора вставать"));
-phoneAlarm.addClock("19:01", () => console.log("Пора вставать"), 1);
-phoneAlarm.printAlarms();
-phoneAlarm.addClock("19:02", () => console.log("Давай, вставай уже"), 2);
-phoneAlarm.addClock("19:03", () => console.log("Давай, вставай уже"), 3);
-console.log("Идентификатор интервала: " + phoneAlarm.timerId);
-phoneAlarm.removeClock(3);
-phoneAlarm.printAlarms();
-phoneAlarm.removeClock(56);
-phoneAlarm.getCurrentFormattedTime();
-phoneAlarm.start();
-console.log("Идентификатор интервала: " + phoneAlarm.timerId);
-//phoneAlarm.stop();
-//console.log("Идентификатор интервала: " + phoneAlarm.timerId);
-//phoneAlarm.clearAlarms();
-//phoneAlarm.printAlarms();
