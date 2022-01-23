@@ -50,7 +50,6 @@ function debounceDecorator2(func, ms) {
     if (flag) {
       func(...rest);
       flag = false;
-      return;
     }
     clearTimeout(timeout);
     timeout = setTimeout(() => {
